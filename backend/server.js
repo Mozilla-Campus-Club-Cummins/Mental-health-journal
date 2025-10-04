@@ -27,8 +27,16 @@ const UserSchema = new mongoose.Schema({
 });
 const User = mongoose.model("User", UserSchema);
 
-// --- Memory store for journals ---
-let journals = {}; // { userId: [ {id, text, createdAt} ] }
+// --- Journal model (persisted in MongoDB) ---
+const JournalSchema = new mongoose.Schema({
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  text: { type: String, required: true },
+  mood: { type: String },
+  confidence: { type: Number },
+  timestamp: { type: Date, default: Date.now },
+  createdAt: { type: Date, default: Date.now }
+});
+const Journal = mongoose.model('Journal', JournalSchema);
 
 // --- Middleware auth ---
 const auth = (req, res, next) => {
@@ -66,24 +74,53 @@ app.post("/logout", (req, res) => {
 });
 
 // --- Get journals ---
-app.get("/journals", auth, (req, res) => {
-  res.json(journals[req.userId] || []);
-});
-
-// --- Add journal ---
-app.post("/journals", auth, (req, res) => {
-  const entry = { id: Date.now(), text: req.body.text, createdAt: new Date() };
-  if (!journals[req.userId]) journals[req.userId] = [];
-  journals[req.userId].unshift(entry); // newest first
-  res.json(entry);
-});
-
-// --- Delete journal ---
-app.delete("/journals/:id", auth, (req, res) => {
-  if (journals[req.userId]) {
-    journals[req.userId] = journals[req.userId].filter(e => e.id != req.params.id);
+// --- Get journals (from DB) ---
+app.get("/journals", auth, async (req, res) => {
+  try {
+    const entries = await Journal.find({ user: req.userId }).sort({ timestamp: -1 });
+    res.json(entries);
+  } catch (err) {
+    console.error("Error fetching journals:", err);
+    res.status(500).json({ msg: "Server error" });
   }
-  res.json({ msg: "Deleted" });
+});
+
+// --- Add journal (persist to DB) ---
+app.post("/journals", auth, async (req, res) => {
+  try {
+    const { text, mood, confidence, timestamp } = req.body;
+    if (!text || typeof text !== 'string') return res.status(400).json({ msg: 'Text is required' });
+
+    let confNum;
+    if (confidence !== undefined) {
+      confNum = Number(confidence);
+      if (Number.isNaN(confNum)) return res.status(400).json({ msg: 'Confidence must be a number' });
+    }
+
+    const entry = await Journal.create({
+      user: req.userId,
+      text,
+      mood,
+      confidence: confNum,
+      timestamp: timestamp ? new Date(timestamp) : undefined
+    });
+    res.json(entry);
+  } catch (err) {
+    console.error("Error creating journal:", err);
+    res.status(500).json({ msg: "Server error" });
+  }
+});
+
+// --- Delete journal (DB) ---
+app.delete("/journals/:id", auth, async (req, res) => {
+  try {
+    const deleted = await Journal.findOneAndDelete({ _id: req.params.id, user: req.userId });
+    if (!deleted) return res.status(404).json({ msg: 'Not found' });
+    res.json({ msg: "Deleted" });
+  } catch (err) {
+    console.error("Error deleting journal:", err);
+    res.status(500).json({ msg: "Server error" });
+  }
 });
 
 app.listen(5000, () => console.log("Server running on http://localhost:5000"));
