@@ -1,70 +1,59 @@
-# Getting Started with Create React App
+Mental Health Journaling App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A web-based journaling application designed to help users express their thoughts, track emotions, and maintain mental well-being through daily journaling.
+Each user can securely register, log in, and maintain their own personal journal entries.
 
-## Available Scripts
+Current Features:
+Personal Journal Entries - Users can write, edit, and delete their own journal entries.
+Secure Authentication - User registration and login system using MongoDB for data storage.
+Date-wise Entry Management - Automatically timestamps journal entries for easy tracking.
+Cloud Database - Uses MongoDB Atlas to store user accounts and journals safely.
+Responsive UI - Built with React for a smooth and modern user experience.
 
-In the project directory, you can run:
+Tech Stack:
 
-### `npm start`
+Frontend:
+React.js
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Backend:
+Node.js
+Express.js
+MongoDB + Mongoose (for database operations)
+JSON Web Token (JWT) for authentication
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+How to Run Locally:
 
-### `npm test`
+Prerequisites:
+Make sure you have the following installed:
+Node.js (v16 or above)
+npm (comes with Node)
+MongoDB Atlas account (or local MongoDB setup)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Clone the Repository
+git clone https://github.com/Mozilla-Campus-Club-Cummins/Mental-health-journal
+cd Mental-health-journal
 
-### `npm run build`
+Backend Setup:
+cd backend
+npm install
+Create a .env file inside the backend folder and add:
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_secret_key
+Start the backend server:
+npm start
+Server will run on http://localhost:5000
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Frontend Setup:
+cd ../frontend
+npm install
+Start the React app:
+npm start
+Frontend will run on http://localhost:3000
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Access the App:
+Open your browser and visit:
+http://localhost:3000
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Contributing:
+Pull requests are welcome!
+For major changes, please open an issue first to discuss what you’d like to improve.
